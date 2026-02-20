@@ -9,8 +9,25 @@ internal static class Program
     {
         const int maxRadius = 5;
         var selectedTower = 1;
+        var towerOne =  new Tower();
+        var towerTwo =  new Tower();
+        var towerThree =  new Tower();
 
         ConsoleKeyInfo key = new ConsoleKeyInfo();
+        
+        List<List<int>> values =
+        [
+            [5, 4, 3, 2, 1],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0]
+        ];
+        List<Tower> threeTowers = new List<Tower>();
+        threeTowers.Add(towerOne);
+        threeTowers.Add(towerTwo);
+        threeTowers.Add(towerThree);
+        
+        AddTowerValues(values, threeTowers);
+        
         do
         {
             
@@ -28,16 +45,11 @@ internal static class Program
                 else
                     selectedTower++;
             }
-            
-
-            List<List<int>> values =
-            [
-                [0, 0, 0, 0, 5],
-                [0, 0, 0, 1, 2],
-                [0, 0, 0, 3, 4]
-            ];
             var j = 0;
-            foreach (var innerValues in values)
+
+
+            
+            foreach (var individualTowers in threeTowers)
             {
                 var i = 0;
                 
@@ -45,7 +57,7 @@ internal static class Program
                 Console.Write("     |");
                 Console.SetCursorPosition(5 + (j * 18), 9);
                 Console.Write("     |");
-                foreach (var diskValue in innerValues)
+                foreach (var diskValue in individualTowers.GetValueAsList())
                 {
                     Console.SetCursorPosition(5 + (j * 18), 10 + i++);
                     Console.Write(" ".Repeat(maxRadius - diskValue));
@@ -61,12 +73,35 @@ internal static class Program
                 {
                     Console.SetCursorPosition(10 + (j * 18), 5);
                     Console.Write("l");    
+                    //Yeah I've no idea how to use extract or the tower objects
+                    if (key.Key == Spacebar)
+                    {
+                        if (selectedTower == 1)
+                        {
+                            Console.WriteLine(towerOne.Extract());
+                        }
+                    } 
                 }
                 j++;
             }
             key = Console.ReadKey();
             Console.Clear();
         } while (key.Key != DownArrow );
+    }
+
+    private static void AddTowerValues(List<List<int>> values, List<Tower> threeTowers)
+    {
+        var i = 0;
+        foreach (var innerValues in values)
+        {
+            foreach (var diskValue in innerValues)
+            {
+                threeTowers[i].Add(diskValue);
+            }
+
+            i++;
+
+        }
     }
 
     private static string Repeat(this string input, int count)
